@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendation Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script>
+        function updateValue(inputId, value) {
+            document.getElementById(inputId+'-value').innerHTML = value;
+        }
+    </script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">{{ "Crop" if request.args.get('type') == 'crop' else "Fertilizer" }} Recommendation Form</h2>
+        <form method="POST" class="bg-white p-4 rounded shadow">
+            <input type="hidden" name="type" value="{{ request.args.get('type') }}">
+            
+            {% if request.args.get('type') == 'crop' %}
+                {% for param, values in crop_params.items() %}
+                <div class="form-group">
+                    <label>{{ values[2] }}</label>
+                    <input type="range" class="form-control-range" 
+                           name="{{ param }}" 
+                           min="{{ values[0] }}" 
+                           max="{{ values[1] }}" 
+                           step="0.1"
+                           oninput="updateValue('{{ param }}', this.value)"
+                           required>
+                    <span id="{{ param }}-value" class="badge badge-primary">{{ values[0] }}</span>
+                </div>
+                {% endfor %}
+            
+            {% else %}
+                {% for param, values in fert_params.items() %}
+                <div class="form-group">
+                    <label>{{ param }}</label>
+                    {% if param in ['Soil Type', 'Crop Type'] %}
+                        <select class="form-control" name="{{ param }}" required>
+                            {% for option in values %}
+                            <option>{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="range" class="form-control-range" 
+                               name="{{ param }}" 
+                               min="{{ values[0] }}" 
+                               max="{{ values[1] }}" 
+                               step="0.1"
+                               oninput="updateValue('{{ param }}', this.value)"
+                               required>
+                        <span id="{{ param }}-value" class="badge badge-primary">{{ values[0] }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            <button type="submit" class="btn btn-primary btn-block mt-4">Get Recommendation</button>
+        </form>
+    </div>
+</body>
+</html>

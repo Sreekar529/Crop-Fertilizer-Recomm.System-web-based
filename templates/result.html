@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendation Result</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card text-center">
+            <div class="card-header bg-success text-white">
+                <h2>Recommendation Result</h2>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">
+                    Recommended {{ 'Crop' if type == 'crop' else 'Fertilizer' }}: 
+                    <span class="text-primary">{{ recommendation }}</span>
+                </h3>
+                <p class="card-text">Model Accuracy: {{ "%.2f"|format(accuracy * 100) }}%</p>
+                <a href="/" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
